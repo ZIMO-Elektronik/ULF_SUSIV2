@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Config Debug",
+      "type": "shell",
+      "isBackground": true,
+      "command": "cmake -Bbuild -GNinja -DCMAKE_BUILD_TYPE=Debug"
+    },
+    {
+      "label": "Build ULF_SUSIV2Tests",
+      "type": "shell",
+      "isBackground": true,
+      "command": "cmake --build build --parallel --target ULF_SUSIV2Tests"
+    },
+    {
+      "label": "Run ULF_SUSIV2Tests",
+      "type": "shell",
+      "isBackground": true,
+      "command": "./build/tests/ULF_SUSIV2Tests"
+    },
+  ]
+}
