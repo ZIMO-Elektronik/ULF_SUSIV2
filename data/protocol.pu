@@ -1,0 +1,30 @@
+@startuml
+
+participant Transmitter as T
+participant Receiver as R
+
+T -> R : 00 00 00 04 01 06 DD
+note over T, R
+  Transmitter sends feature request
+  which is 4 bytes long and contains a busy phase
+end note
+
+T <- R : 06 FB FF FF 7F
+note over T, R
+  Receiver answers with ack
+  and the requested data
+end note
+
+...
+
+T -> R : 00 00 00 00 01 05 ... XX
+note over T, R
+  Receiver sends ZPP write
+end note
+
+T <- R : 06
+note over T, R
+  Receiver answers with ack
+end note
+
+@enduml
