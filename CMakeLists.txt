@@ -25,7 +25,17 @@ else()
   target_include_directories(ULF_SUSIV2 SYSTEM INTERFACE include)
 endif()
 
+if(NOT TARGET ZTL::ZTL)
+  cpmaddpackage("gh:ZIMO-Elektronik/ZTL@0.19.1")
+endif()
+
+if(NOT TARGET ZUSI::ZUSI)
+  cpmaddpackage("gh:ZIMO-Elektronik/ZUSI@0.8.0")
+endif()
+
 target_common_warnings(ULF_SUSIV2 INTERFACE)
+
+target_link_libraries(ULF_SUSIV2 INTERFACE ZTL::ZTL ZUSI::ZUSI)
 
 if(PROJECT_IS_TOP_LEVEL)
   include(CTest)
