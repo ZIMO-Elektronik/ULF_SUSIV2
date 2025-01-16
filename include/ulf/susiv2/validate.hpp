@@ -39,4 +39,5 @@ validate(std::span<uint8_t const> const& frame) {
   else
     return std::unexpected{cmd ? cmd.error() : crc.error()};
 }
+
 } // namespace ulf::susiv2

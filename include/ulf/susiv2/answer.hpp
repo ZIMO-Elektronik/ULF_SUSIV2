@@ -20,19 +20,15 @@ namespace ulf::susiv2 {
 
 /// Formatter for an answer destined to ZSP
 ///
-/// \param  response  ack or nak
-/// \param  re_frame  optional decoder response data
+/// \param  re_frame  Optional decoder response data
 /// \return Formatted answer ready to send
-inline auto answer_zsp(
-  bool response,
-  std::optional<ztl::inplace_vector<uint8_t, 4uz>> re_frame = std::nullopt) {
-  ztl::inplace_vector<uint8_t, 6uz> ret;
-  ret.push_back(response ? ack : nak);
-  if (re_frame) {
-    std::ranges::copy(*re_frame, std::back_inserter(ret));
-    ret.push_back(zusi::crc8(*re_frame));
-  }
-  return ret;
+constexpr ztl::inplace_vector<uint8_t, 6uz>
+answer_zsp(std::optional<ztl::inplace_vector<uint8_t, 4uz>> re_frame) {
+  if (!re_frame) return {nak};
+  ztl::inplace_vector<uint8_t, 6uz> retval{ack};
+  std::ranges::copy(*re_frame, begin(retval) + 1);
+  retval.push_back(zusi::crc8(*re_frame));
+  return retval;
 }
 
 } // namespace ulf::susiv2
