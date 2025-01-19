@@ -35,7 +35,7 @@ inline constexpr size_t exit_size{5uz};
 /// \retval zusi::Command Command was found
 /// \retval std::nullopt  ZUSI frame is too short to contain a command byte
 /// \retval std::errc     Unknown command
-inline std::expected<std::optional<zusi::Command>, std::errc>
+constexpr std::expected<std::optional<zusi::Command>, std::errc>
 get_command(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::cmd_pos) {
     if (zusi::is_valid_command(frame[zusi::cmd_pos]))
@@ -51,7 +51,7 @@ get_command(std::span<uint8_t const> frame) {
 /// \retval uint8_t       Count that was found
 /// \retval std::nullopt  Frame is too short to contain a count byte
 /// \retval std::errc     Frame cannot contain a count (e.g. FlashDelete)
-inline std::expected<std::optional<uint8_t>, std::errc>
+constexpr std::expected<std::optional<uint8_t>, std::errc>
 get_count(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::data_cnt_pos)
     switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
@@ -70,7 +70,7 @@ get_count(std::span<uint8_t const> frame) {
 /// \retval std::nullopt  Frame is too short to contain an address
 /// \retval std::errc     Frame cannot contain an address or address is out of
 ///                       valid bounds
-inline std::expected<std::optional<uint32_t>, std::errc>
+constexpr std::expected<std::optional<uint32_t>, std::errc>
 get_address(std::span<uint8_t const> frame) {
   if (size(frame) > (zusi::addr_pos + 3uz))
     switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
@@ -92,8 +92,8 @@ get_address(std::span<uint8_t const> frame) {
 /// \retval ztl::inplace_vector Frame data as an ordered vector
 /// \retval std::nullopt        Frame is too short to contain all flash data
 /// \retval std::errc           Frame cannot contain flash data
-inline std::expected<std::optional<ztl::inplace_vector<uint8_t, 256uz>>,
-                     std::errc>
+constexpr std::expected<std::optional<ztl::inplace_vector<uint8_t, 256uz>>,
+                        std::errc>
 get_data(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::data_pos)
     switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
@@ -120,7 +120,7 @@ get_data(std::span<uint8_t const> frame) {
 /// \retval uint8_t       Exit flags of the ZUSI frame
 /// \retval std::nullopt  Frame is too short to contain exit flags
 /// \retval std::errc     Frame data is corrupt
-inline std::expected<std::optional<uint8_t>, std::errc>
+constexpr std::expected<std::optional<uint8_t>, std::errc>
 get_exit_flags(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::exit_flags_pos)
     switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
@@ -136,7 +136,7 @@ get_exit_flags(std::span<uint8_t const> frame) {
 /// \retval uint8_t       Checksum of the ZUSI frame
 /// \retval std::nullopt  Frame is too short to contain a checksum
 /// \retval std::errc     Frame data is corrupt
-inline std::expected<std::optional<uint8_t>, std::errc>
+constexpr std::expected<std::optional<uint8_t>, std::errc>
 get_checksum(std::span<uint8_t const> frame) {
   // TODO: Replace magic numbers with macros/constexpr/similar
 

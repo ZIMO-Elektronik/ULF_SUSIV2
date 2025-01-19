@@ -24,11 +24,11 @@ ULF_SUSIV2 is one of serval [ULF_COM](https://github.com/ZIMO-Elektronik/ULF_COM
 The protocol consists of only a single frame and is essentially a wrapper around [ZUSI](https://github.com/ZIMO-Elektronik/ZUSI) packets. The following header is prepended to the actual data.
 | Length | Description                                                                              |
 | ------ | ---------------------------------------------------------------------------------------- |
-| 4 byte | Length of the expected answer in byte (not including the ACK/NAK byte)                   |
+| 4 byte | Length of the expected answer in byte (not including the ack/nak byte)                   |
 | 1 byte | 1 - ZUSI command contains a busy phase<br>0 - ZUSI command doesn't contains a busy phase |
 | N byte | ZUSI packet                                                                              |
 
-Each SUSIV2 frame is followed by a response. This consists of an ACK or NAK byte and any data sent by the decoder including the CRC8 checksum.
+Each SUSIV2 frame is followed by a response. This consists of an [ack](./include/ulf/susiv2/ack.hpp) or [nak](./include/ulf/susiv2/nak.hpp) byte and any data sent by the decoder including the CRC8 checksum.
 
 ![](data/images/protocol.png)
 
@@ -42,13 +42,13 @@ This library is meant to be consumed with CMake.
 
 ```cmake
 #Either by including it with CPM
-cpmaddpackage("gh:ZIMO-Elektronik/ULF_SUSIV2@0.0.1")
+cpmaddpackage("gh:ZIMO-Elektronik/ULF_SUSIV2@0.1.1")
 
 # or the FetchContent module
 FetchContent_Declare(
   ULF_SUSIV2
   GIT_REPOSITORY "https://github.com/ZIMO-Elektronik/ULF_SUSIV2"
-  GIT_TAG 0.0.1)
+  GIT_TAG 0.1.1)
 FetchContent_MakeAvailable(ULF_SUSIV2)
 
 target_link_libraries(YourTarget PRIVATE ULF::SUSIV2)
