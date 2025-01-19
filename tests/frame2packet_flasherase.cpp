@@ -15,7 +15,7 @@ TEST(format, valid_FlashErase) {
             std::back_inserter(sv2_frame));
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
@@ -35,7 +35,7 @@ TEST(format, short_FlashErase) {
   sv2_frame.pop_back();
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
 
@@ -56,7 +56,7 @@ TEST(format, invalid_FlashErase) {
   sv2_frame.push_back(0xFFu); // Faulty checksum
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
 
   auto it_v{begin(sv2_frame)};
@@ -76,7 +76,7 @@ TEST(format, too_long_FlashErase) {
   sv2_frame.push_back(0xFAu); // Even more data
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
   ASSERT_EQ(size(frame_s), size(flasherase_zusi))
