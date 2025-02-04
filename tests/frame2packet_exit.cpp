@@ -2,41 +2,36 @@
 #include "ulf/susiv2.hpp"
 
 constexpr std::array<uint8_t, 5uz> susiv2_pre{
-  0x00u, 0x00u, 0x00u, 0x00u, 0x01u};
-constexpr std::array<uint8_t, 11uz> flashwrite_zusi{
-  0x05u, 0x03u, 0x00u, 0x00u, 0x00u, 0xFFu, 0xAFu, 0xBFu, 0xCFu, 0xDFu, 0x8Bu};
+  0x00u, 0x00u, 0x00u, 0x02u, 0x01u};
+constexpr std::array<uint8_t, 5uz> exit_zusi{0x07u, 0x55u, 0xAAu, 0x02u, 0x7Du};
 
-TEST(format, valid_FlashWrite) {
+TEST(format, valid_Exit) {
   using namespace ulf::susiv2;
 
-  // Valid FlashWrite SUSIV2 Frame
+  // Valid Exit SUSIV2 Frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(flashwrite_zusi),
-            end(flashwrite_zusi),
-            std::back_inserter(sv2_frame));
+  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(flashwrite_zusi)};
+  auto it_v{begin(exit_zusi)};
   for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
-TEST(format, short_FlashWrite) {
+TEST(format, short_Exit) {
   using namespace ulf::susiv2;
 
-  // Short FlashWrite SUSIV2 Frame
+  // Short Exit SUSIV2 Frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(flashwrite_zusi),
-            end(flashwrite_zusi),
-            std::back_inserter(sv2_frame));
+  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 
   sv2_frame.pop_back();
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
 
@@ -44,45 +39,40 @@ TEST(format, short_FlashWrite) {
   for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
-TEST(format, invalid_FlashWrite) {
+TEST(format, invalid_Exit) {
   using namespace ulf::susiv2;
 
-  // Invalid FlashWrite SUSIV2 Frame
+  // Invalid Exit SUSIV2 Frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(flashwrite_zusi),
-            end(flashwrite_zusi),
-            std::back_inserter(sv2_frame));
+  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 
   sv2_frame.pop_back();
   sv2_frame.push_back(0xFFu); // Faulty checksum
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
 
   auto it_v{begin(sv2_frame)};
   for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
-TEST(format, too_long_FlashWrite) {
+TEST(format, too_long_Exit) {
   using namespace ulf::susiv2;
 
-  // Long FlashWrite SUSIV2 Frame
+  // Long Exit SUSIV2 Frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(flashwrite_zusi),
-            end(flashwrite_zusi),
-            std::back_inserter(sv2_frame));
+  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 
   sv2_frame.push_back(0xFFu); // Too much data
   sv2_frame.push_back(0xFAu); // Even more data
   std::span<uint8_t const> frame_s{sv2_frame};
 
-  auto ret{format(frame_s)};
+  auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(flashwrite_zusi))
-    << "Too much data was returned";
+  ASSERT_EQ(size(frame_s), size(exit_zusi)) << "Too much data was returned";
 
-  auto it_v{begin(flashwrite_zusi)};
+  auto it_v{begin(exit_zusi)};
   for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }

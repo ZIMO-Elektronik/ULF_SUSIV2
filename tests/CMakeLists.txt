@@ -19,6 +19,7 @@ cpmaddpackage(
   OPTIONS
   "INSTALL_GTEST OFF")
 
-target_link_libraries(ULF_SUSIV2Tests PRIVATE ULF_SUSIV2 GTest::gtest_main GTest::gmock)
+target_link_libraries(ULF_SUSIV2Tests PRIVATE ULF_SUSIV2 GTest::gtest_main
+                                              GTest::gmock)
 
 gtest_discover_tests(ULF_SUSIV2Tests)

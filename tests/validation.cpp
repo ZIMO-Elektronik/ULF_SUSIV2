@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
-
-#include "ulf/susiv2.hpp"
-
 #include <vector>
 #include <zusi/crc8.hpp>
+#include "ulf/susiv2.hpp"
 
 TEST(validation, CvRead_validation) {
   using namespace ulf::susiv2;

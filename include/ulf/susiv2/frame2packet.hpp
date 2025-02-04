@@ -2,9 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/// Convert SUSIV2 into ZUSI frames
+/// Convert frame to ZUSI packet
 ///
-/// \file   ulf/susiv2/format.hpp
+/// \file   ulf/susiv2/frame2packet.hpp
 /// \author Jonas Gahlert
 /// \date   03/12/2024
 
@@ -17,24 +17,23 @@
 
 namespace ulf::susiv2 {
 
-/// Formats a SUSIV2 frame into a ZUSI frame, but performs no integrity checks
+/// Convert frame to ZUSI packet without validation
 ///
-/// \param[in,out]  frame  SUSIV2 frame to be converted, will contain the ZUSI
+/// \param[in,out]  frame SUSIV2 frame to be converted, will contain the ZUSI
 ///                       frame on return
-inline void format_no_validate(std::span<uint8_t const>& frame) {
+constexpr void frame2packet_no_validate(std::span<uint8_t const>& frame) {
   frame = frame.subspan(5uz);
 }
 
-/// Formats a SUSIV2 frame into a ZUSI frame, performs checks to verify
-/// integrity of the frame
+/// Convert frame to ZUSI packet
 ///
 /// \param[in,out]  frame         SUSIV2 frame to be converted, will contain the
 ///                               ZUSI frame on successful verification
 /// \retval         true          Operation successful
 /// \retval         std::nullopt  Frame incomplete
 /// \retval         std::errc     Frame corrupt
-inline std::expected<std::optional<bool>, std::errc>
-format(std::span<uint8_t const>& frame) {
+constexpr std::expected<std::optional<bool>, std::errc>
+frame2packet(std::span<uint8_t const>& frame) {
   if (size(frame) < 7uz) return std::nullopt;
 
   auto tmp{frame.subspan(5uz)};

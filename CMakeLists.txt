@@ -14,9 +14,12 @@ project(
   VERSION ${VERSION_FROM_GIT}
   LANGUAGES CXX)
 
-set(ULF_SUSIV2_MAX_PACKET_SIZE
+set(ULF_SUSIV2_MAX_FRAME_SIZE
     268u
-    CACHE STRING "Maximum size of a packet in bytes")
+    CACHE STRING "Maximum size of a frame in bytes")
+set(ULF_SUSIV2_MAX_RESPONSE_SIZE
+    6u
+    CACHE STRING "Maximum size of a response in bytes")
 
 add_library(ULF_SUSIV2 INTERFACE ${SRC})
 add_library(ULF::SUSIV2 ALIAS ULF_SUSIV2)
@@ -24,7 +27,9 @@ add_library(ULF::SUSIV2 ALIAS ULF_SUSIV2)
 target_compile_features(ULF_SUSIV2 INTERFACE cxx_std_23)
 
 target_compile_definitions(
-  ULF_SUSIV2 INTERFACE ULF_SUSIV2_MAX_PACKET_SIZE=${ULF_SUSIV2_MAX_PACKET_SIZE})
+  ULF_SUSIV2
+  INTERFACE ULF_SUSIV2_MAX_FRAME_SIZE=${ULF_SUSIV2_MAX_FRAME_SIZE}
+            ULF_SUSIV2_MAX_RESPONSE_SIZE=${ULF_SUSIV2_MAX_RESPONSE_SIZE})
 
 if(PROJECT_IS_TOP_LEVEL)
   target_include_directories(ULF_SUSIV2 INTERFACE include)
