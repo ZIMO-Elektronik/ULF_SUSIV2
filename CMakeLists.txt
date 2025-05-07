@@ -4,7 +4,7 @@ include(FetchContent)
 FetchContent_Declare(
   CMakeModules
   GIT_REPOSITORY "https://github.com/ZIMO-Elektronik/CMakeModules"
-  GIT_TAG v0.9.3
+  GIT_TAG v0.9.5
   SOURCE_DIR ${CMAKE_BINARY_DIR}/CMakeModules)
 FetchContent_MakeAvailable(CMakeModules)
 
@@ -38,11 +38,11 @@ else()
 endif()
 
 if(NOT TARGET ZTL::ZTL)
-  cpmaddpackage("gh:ZIMO-Elektronik/ZTL@0.19.1")
+  cpmaddpackage("gh:ZIMO-Elektronik/ZTL@0.20.0")
 endif()
 
 if(NOT TARGET ZUSI::ZUSI)
-  cpmaddpackage("gh:ZIMO-Elektronik/ZUSI@0.9.0")
+  cpmaddpackage("gh:ZIMO-Elektronik/ZUSI@0.9.2")
 endif()
 
 target_common_warnings(ULF_SUSIV2 INTERFACE)

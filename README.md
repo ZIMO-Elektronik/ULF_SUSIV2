@@ -42,13 +42,13 @@ This library is meant to be consumed with CMake.
 
 ```cmake
 #Either by including it with CPM
-cpmaddpackage("gh:ZIMO-Elektronik/ULF_SUSIV2@0.1.1")
+cpmaddpackage("gh:ZIMO-Elektronik/ULF_SUSIV2@0.1.2")
 
 # or the FetchContent module
 FetchContent_Declare(
   ULF_SUSIV2
   GIT_REPOSITORY "https://github.com/ZIMO-Elektronik/ULF_SUSIV2"
-  GIT_TAG 0.1.1)
+  GIT_TAG 0.1.2)
 FetchContent_MakeAvailable(ULF_SUSIV2)
 
 target_link_libraries(YourTarget PRIVATE ULF::SUSIV2)
