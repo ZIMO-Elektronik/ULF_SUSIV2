@@ -11,7 +11,7 @@ constexpr std::array<uint8_t, 7uz> cvread_zusi{
 TEST(format, valid_CvRead) {
   using namespace ulf::susiv2;
 
-  // Valid CvRead SUSIV2 Frame
+  // Valid CvRead SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvread_zusi), end(cvread_zusi), std::back_inserter(sv2_frame));
@@ -27,7 +27,7 @@ TEST(format, valid_CvRead) {
 TEST(format, short_CvRead) {
   using namespace ulf::susiv2;
 
-  // Short CvRead SUSIV2 Frame
+  // Short CvRead SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvread_zusi), end(cvread_zusi), std::back_inserter(sv2_frame));
@@ -43,7 +43,7 @@ TEST(format, short_CvRead) {
 TEST(format, invalid_CvRead) {
   using namespace ulf::susiv2;
 
-  // Invalid CvRead SUSIV2 Frame
+  // Invalid CvRead SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvread_zusi), end(cvread_zusi), std::back_inserter(sv2_frame));
@@ -59,7 +59,7 @@ TEST(format, invalid_CvRead) {
 TEST(format, too_long_CvRead) {
   using namespace ulf::susiv2;
 
-  // Long CvRead SUSIV2 Frame
+  // Long CvRead SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvread_zusi), end(cvread_zusi), std::back_inserter(sv2_frame));

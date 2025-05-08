@@ -8,7 +8,7 @@ constexpr std::array<uint8_t, 4uz> flasherase_zusi{0x04u, 0x55u, 0xAAu, 0xC7};
 TEST(format, valid_FlashErase) {
   using namespace ulf::susiv2;
 
-  // Valid FlashErase SUSIV2 Frame
+  // Valid FlashErase SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flasherase_zusi),
             end(flasherase_zusi),
@@ -25,7 +25,7 @@ TEST(format, valid_FlashErase) {
 TEST(format, short_FlashErase) {
   using namespace ulf::susiv2;
 
-  // Short FlashErase SUSIV2 Frame
+  // Short FlashErase SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flasherase_zusi),
             end(flasherase_zusi),
@@ -42,7 +42,7 @@ TEST(format, short_FlashErase) {
 TEST(format, invalid_FlashErase) {
   using namespace ulf::susiv2;
 
-  // Invalid FlashErase SUSIV2 Frame
+  // Invalid FlashErase SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flasherase_zusi),
             end(flasherase_zusi),
@@ -59,7 +59,7 @@ TEST(format, invalid_FlashErase) {
 TEST(format, too_long_FlashErase) {
   using namespace ulf::susiv2;
 
-  // Long FlashErase SUSIV2 Frame
+  // Long FlashErase SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flasherase_zusi),
             end(flasherase_zusi),

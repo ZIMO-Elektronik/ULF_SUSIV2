@@ -11,7 +11,7 @@ constexpr std::array<uint8_t, 11uz> cvwrite_zusi{
 TEST(format, valid_CvWrite) {
   using namespace ulf::susiv2;
 
-  // Valid CvWrite SUSIV2 Frame
+  // Valid CvWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvwrite_zusi), end(cvwrite_zusi), std::back_inserter(sv2_frame));
@@ -27,7 +27,7 @@ TEST(format, valid_CvWrite) {
 TEST(format, short_CvWrite) {
   using namespace ulf::susiv2;
 
-  // Short CvWrite SUSIV2 Frame
+  // Short CvWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvwrite_zusi), end(cvwrite_zusi), std::back_inserter(sv2_frame));
@@ -43,7 +43,7 @@ TEST(format, short_CvWrite) {
 TEST(format, invalid_CvWrite) {
   using namespace ulf::susiv2;
 
-  // Invalid CvWrite SUSIV2 Frame
+  // Invalid CvWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvwrite_zusi), end(cvwrite_zusi), std::back_inserter(sv2_frame));
@@ -59,7 +59,7 @@ TEST(format, invalid_CvWrite) {
 TEST(format, too_long_CvWrite) {
   using namespace ulf::susiv2;
 
-  // Long CvWrite SUSIV2 Frame
+  // Long CvWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(cvwrite_zusi), end(cvwrite_zusi), std::back_inserter(sv2_frame));

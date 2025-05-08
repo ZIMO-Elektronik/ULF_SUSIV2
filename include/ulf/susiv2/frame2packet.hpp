@@ -30,7 +30,7 @@ frame2packet_no_validate(std::span<uint8_t const>& frame) {
 ///
 /// \param[in,out]  frame         SUSIV2 frame to be converted, will contain the
 ///                               ZUSI frame on successful verification
-/// \retval         std::span     View on Packet
+/// \retval         std::span     View on packet
 /// \retval         std::nullopt  Frame incomplete
 /// \retval         std::errc     Frame corrupt
 constexpr std::expected<std::optional<std::span<uint8_t const>>, std::errc>
@@ -76,10 +76,10 @@ frame2packet(std::span<uint8_t const> frame) {
   }
 
   // Could be command?
-  auto ret = validate(result);
+  auto const valid{validate(result)};
 
-  if (!ret) return std::unexpected(ret.error());
-  if (!*ret) return std::nullopt;
+  if (!valid) return std::unexpected(valid.error());
+  if (!*valid) return std::nullopt;
   return result;
 }
 

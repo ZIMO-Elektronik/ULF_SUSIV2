@@ -10,7 +10,7 @@ constexpr std::array<uint8_t, 5uz> exit_zusi{0x07u, 0x55u, 0xAAu, 0x02u, 0x7Du};
 TEST(format, valid_Exit) {
   using namespace ulf::susiv2;
 
-  // Valid Exit SUSIV2 Frame
+  // Valid Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
   std::span<uint8_t const> frame_s{sv2_frame};
@@ -25,7 +25,7 @@ TEST(format, valid_Exit) {
 TEST(format, short_Exit) {
   using namespace ulf::susiv2;
 
-  // Short Exit SUSIV2 Frame
+  // Short Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 
@@ -40,7 +40,7 @@ TEST(format, short_Exit) {
 TEST(format, invalid_Exit) {
   using namespace ulf::susiv2;
 
-  // Invalid Exit SUSIV2 Frame
+  // Invalid Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 
@@ -55,7 +55,7 @@ TEST(format, invalid_Exit) {
 TEST(format, too_long_Exit) {
   using namespace ulf::susiv2;
 
-  // Long Exit SUSIV2 Frame
+  // Long Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
 

@@ -9,7 +9,7 @@ constexpr std::array<uint8_t, 11uz> flashwrite_zusi{
 TEST(format, valid_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Valid FlashWrite SUSIV2 Frame
+  // Valid FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -26,7 +26,7 @@ TEST(format, valid_FlashWrite) {
 TEST(format, short_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Short FlashWrite SUSIV2 Frame
+  // Short FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -43,7 +43,7 @@ TEST(format, short_FlashWrite) {
 TEST(format, invalid_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Invalid FlashWrite SUSIV2 Frame
+  // Invalid FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -60,7 +60,7 @@ TEST(format, invalid_FlashWrite) {
 TEST(format, too_long_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Long FlashWrite SUSIV2 Frame
+  // Long FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
