@@ -19,8 +19,7 @@ TEST(format, valid_FlashErase) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(flasherase_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flasherase_zusi));
 }
 
 TEST(format, short_FlashErase) {
@@ -38,9 +37,6 @@ TEST(format, short_FlashErase) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_FlashErase) {
@@ -58,9 +54,6 @@ TEST(format, invalid_FlashErase) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_FlashErase) {
@@ -79,9 +72,6 @@ TEST(format, too_long_FlashErase) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(flasherase_zusi))
-    << "Too much data was returned";
 
-  auto it_v{begin(flasherase_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flasherase_zusi));
 }

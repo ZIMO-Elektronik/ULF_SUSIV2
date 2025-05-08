@@ -21,61 +21,66 @@ namespace ulf::susiv2 {
 ///
 /// \param[in,out]  frame SUSIV2 frame to be converted, will contain the ZUSI
 ///                       frame on return
-constexpr void frame2packet_no_validate(std::span<uint8_t const>& frame) {
-  frame = frame.subspan(5uz);
+constexpr std::span<uint8_t const>
+frame2packet_no_validate(std::span<uint8_t const>& frame) {
+  return frame.subspan(5uz);
 }
 
 /// Convert frame to ZUSI packet
 ///
 /// \param[in,out]  frame         SUSIV2 frame to be converted, will contain the
 ///                               ZUSI frame on successful verification
-/// \retval         true          Operation successful
+/// \retval         std::span     View on Packet
 /// \retval         std::nullopt  Frame incomplete
 /// \retval         std::errc     Frame corrupt
-constexpr std::expected<std::optional<bool>, std::errc>
-frame2packet(std::span<uint8_t const>& frame) {
+constexpr std::expected<std::optional<std::span<uint8_t const>>, std::errc>
+frame2packet(std::span<uint8_t const> frame) {
   if (size(frame) < 7uz) return std::nullopt;
 
-  auto tmp{frame.subspan(5uz)};
-  auto const cmd{get_command(tmp)};
+  auto result{frame.subspan(5uz)};
+  auto const cmd{get_command(result)};
   if (!cmd) return std::unexpected{cmd.error()};
   if (!*cmd) return std::nullopt;
 
   switch (std::bit_cast<zusi::Command>(**cmd)) {
     case zusi::Command::CvRead:
-      if (size(tmp) >= cvread_size) tmp = tmp.subspan(0uz, cvread_size);
+      if (size(result) >= cvread_size)
+        result = result.subspan(0uz, cvread_size);
       else return std::nullopt;
       break;
     case zusi::Command::CvWrite:
-      if (size(tmp) >= cvwrite_size(tmp[zusi::data_cnt_pos]))
-        tmp = tmp.subspan(0uz, cvwrite_size(tmp[zusi::data_cnt_pos]));
+      if (size(result) >= cvwrite_size(result[zusi::data_cnt_pos]))
+        result = result.subspan(0uz, cvwrite_size(result[zusi::data_cnt_pos]));
       else return std::nullopt;
       break;
     case zusi::Command::ZppWrite:
-      if (size(tmp) >= zppwrite_size(tmp[zusi::data_cnt_pos]))
-        tmp = tmp.subspan(0uz, zppwrite_size(tmp[zusi::data_cnt_pos]));
+      if (size(result) >= zppwrite_size(result[zusi::data_cnt_pos]))
+        result = result.subspan(0uz, zppwrite_size(result[zusi::data_cnt_pos]));
       else return std::nullopt;
       break;
     case zusi::Command::ZppErase:
-      if (size(tmp) >= zpperase_size) tmp = tmp.subspan(0uz, zpperase_size);
+      if (size(result) >= zpperase_size)
+        result = result.subspan(0uz, zpperase_size);
       else return std::nullopt;
       break;
     case zusi::Command::Features:
-      if (size(tmp) >= features_size) tmp = tmp.subspan(0uz, features_size);
+      if (size(result) >= features_size)
+        result = result.subspan(0uz, features_size);
       else return std::nullopt;
       break;
     case zusi::Command::Exit:
-      if (size(tmp) >= exit_size) tmp = tmp.subspan(0uz, exit_size);
+      if (size(result) >= exit_size) result = result.subspan(0uz, exit_size);
       else return std::nullopt;
       break;
     default: break;
   }
 
   // Could be command?
-  auto ret = validate(tmp);
-  if (ret && *ret) frame = tmp;
+  auto ret = validate(result);
 
-  return ret;
+  if (!ret) return std::unexpected(ret.error());
+  if (!*ret) return std::nullopt;
+  return result;
 }
 
 } // namespace ulf::susiv2

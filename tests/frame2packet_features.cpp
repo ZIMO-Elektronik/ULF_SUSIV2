@@ -18,8 +18,7 @@ TEST(format, valid_Features) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(features_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, features_zusi));
 }
 
 TEST(format, short_Features) {
@@ -36,9 +35,6 @@ TEST(format, short_Features) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_Features) {
@@ -55,9 +51,6 @@ TEST(format, invalid_Features) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_Features) {
@@ -75,8 +68,6 @@ TEST(format, too_long_Features) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(features_zusi)) << "Too much data was returned";
 
-  auto it_v{begin(features_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, features_zusi));
 }

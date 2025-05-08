@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include "ulf/susiv2.hpp"
 
+#include <algorithm>
+
 constexpr std::array<uint8_t, 5uz> susiv2_pre{
   0x00u, 0x00u, 0x00u, 0x00u, 0x01u};
 constexpr std::array<uint8_t, 11uz> cvwrite_zusi{
@@ -19,8 +21,7 @@ TEST(format, valid_CvWrite) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(cvwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, cvwrite_zusi));
 }
 
 TEST(format, short_CvWrite) {
@@ -37,9 +38,6 @@ TEST(format, short_CvWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_CvWrite) {
@@ -56,9 +54,6 @@ TEST(format, invalid_CvWrite) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_CvWrite) {
@@ -76,8 +71,5 @@ TEST(format, too_long_CvWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(cvwrite_zusi)) << "Too much data was returned";
-
-  auto it_v{begin(cvwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, cvwrite_zusi));
 }

@@ -20,8 +20,7 @@ TEST(format, valid_FlashWrite) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(flashwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flashwrite_zusi));
 }
 
 TEST(format, short_FlashWrite) {
@@ -39,9 +38,6 @@ TEST(format, short_FlashWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_FlashWrite) {
@@ -59,9 +55,6 @@ TEST(format, invalid_FlashWrite) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_FlashWrite) {
@@ -80,9 +73,6 @@ TEST(format, too_long_FlashWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(flashwrite_zusi))
-    << "Too much data was returned";
 
-  auto it_v{begin(flashwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flashwrite_zusi));
 }

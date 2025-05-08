@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include "ulf/susiv2.hpp"
 
+#include <algorithm>
+
 constexpr std::array<uint8_t, 5uz> susiv2_pre{
   0x00u, 0x00u, 0x00u, 0x02u, 0x01u};
 constexpr std::array<uint8_t, 5uz> exit_zusi{0x07u, 0x55u, 0xAAu, 0x02u, 0x7Du};
@@ -17,8 +19,7 @@ TEST(format, valid_Exit) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(exit_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, exit_zusi));
 }
 
 TEST(format, short_Exit) {
@@ -34,9 +35,6 @@ TEST(format, short_Exit) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_Exit) {
@@ -52,9 +50,6 @@ TEST(format, invalid_Exit) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_Exit) {
@@ -71,8 +66,5 @@ TEST(format, too_long_Exit) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(exit_zusi)) << "Too much data was returned";
-
-  auto it_v{begin(exit_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, exit_zusi));
 }
