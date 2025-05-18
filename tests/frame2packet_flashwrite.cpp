@@ -9,7 +9,7 @@ constexpr std::array<uint8_t, 11uz> flashwrite_zusi{
 TEST(format, valid_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Valid FlashWrite SUSIV2 Frame
+  // Valid FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -20,14 +20,13 @@ TEST(format, valid_FlashWrite) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(flashwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flashwrite_zusi));
 }
 
 TEST(format, short_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Short FlashWrite SUSIV2 Frame
+  // Short FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -39,15 +38,12 @@ TEST(format, short_FlashWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Invalid FlashWrite SUSIV2 Frame
+  // Invalid FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -59,15 +55,12 @@ TEST(format, invalid_FlashWrite) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_FlashWrite) {
   using namespace ulf::susiv2;
 
-  // Long FlashWrite SUSIV2 Frame
+  // Long FlashWrite SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(begin(flashwrite_zusi),
             end(flashwrite_zusi),
@@ -80,9 +73,6 @@ TEST(format, too_long_FlashWrite) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(flashwrite_zusi))
-    << "Too much data was returned";
 
-  auto it_v{begin(flashwrite_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, flashwrite_zusi));
 }

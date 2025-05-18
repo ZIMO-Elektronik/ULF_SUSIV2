@@ -8,7 +8,7 @@ constexpr std::array<uint8_t, 2uz> features_zusi{0x06u, 0xDDu};
 TEST(format, valid_Features) {
   using namespace ulf::susiv2;
 
-  // Valid Features SUSIV2 Frame
+  // Valid Features SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(features_zusi), end(features_zusi), std::back_inserter(sv2_frame));
@@ -18,14 +18,13 @@ TEST(format, valid_Features) {
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
 
-  auto it_v{begin(features_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, features_zusi));
 }
 
 TEST(format, short_Features) {
   using namespace ulf::susiv2;
 
-  // Short Features SUSIV2 Frame
+  // Short Features SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(features_zusi), end(features_zusi), std::back_inserter(sv2_frame));
@@ -36,15 +35,12 @@ TEST(format, short_Features) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_FALSE(*ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, invalid_Features) {
   using namespace ulf::susiv2;
 
-  // Invalid Features SUSIV2 Frame
+  // Invalid Features SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(features_zusi), end(features_zusi), std::back_inserter(sv2_frame));
@@ -55,15 +51,12 @@ TEST(format, invalid_Features) {
 
   auto ret{frame2packet(frame_s)};
   ASSERT_FALSE(ret);
-
-  auto it_v{begin(sv2_frame)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
 }
 
 TEST(format, too_long_Features) {
   using namespace ulf::susiv2;
 
-  // Long Features SUSIV2 Frame
+  // Long Features SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
   std::copy(
     begin(features_zusi), end(features_zusi), std::back_inserter(sv2_frame));
@@ -75,8 +68,6 @@ TEST(format, too_long_Features) {
   auto ret{frame2packet(frame_s)};
   ASSERT_TRUE(ret);
   ASSERT_TRUE(*ret);
-  ASSERT_EQ(size(frame_s), size(features_zusi)) << "Too much data was returned";
 
-  auto it_v{begin(features_zusi)};
-  for (auto it_t : frame_s) { ASSERT_EQ(it_t, *it_v++); }
+  ASSERT_TRUE(std::ranges::equal(**ret, features_zusi));
 }

@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.0
+- Change return type of `frame2packet` to `std::span`
+
 ## 0.1.2
 - Update to ZUSI 0.9.2
 - Update to ZTL 0.20.0

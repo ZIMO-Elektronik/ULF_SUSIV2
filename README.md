@@ -58,4 +58,27 @@ target_link_libraries(YourTarget PRIVATE ULF::SUSIV2)
 :construction:
 
 ## Usage
-:construction:
+To convert a SUSIV2 frame to a packet, `frame2packet` can be used. In order to be able to distinguish between an error case and the case where the data is still incomplete, the return value of the functions is `std::expected<std::optional<std::span<uint8_t>>, std::errc>`. If the pattern is not recognized at all, i.e. in the event of an error, then a `std::errc` is returned. If something is found but the data is not yet complete, a `std::nullopt` is returned. Otherwise the found data is returned as a non-owning view `std::span<uint8_t>`. The following snippet shows how `frame2packet` can be used.
+```cpp
+// Get ZUSI packet from SUSIV2 frame
+auto maybe_packet{ulf::susiv2::frame2packet(frame)};
+
+// Could be ZUSI packet
+if (maybe_packet) {
+  // Already complete?
+  if (*maybe_packet) {
+    // Complete ZUSI packet
+    auto packet{**maybe_packet};
+  }
+  // No, still missing characters
+  else {}
+}
+// Error, not ZUSI packet
+else {}
+```
+
+A `Response` can be generated from a `Feedback` via `feedback2response`. The `Response` is preformatted and can be sent directly.
+```cpp
+// Create Response from Feedback
+auto response{ulf::susiv2::feedback2response(feedback)};
+```
