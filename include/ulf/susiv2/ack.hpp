@@ -14,6 +14,8 @@
 
 namespace ulf::susiv2 {
 
-inline constexpr uint8_t ack{0x06u};
+using Ack = uint8_t;
+
+inline constexpr Ack ack{0x06u};
 
 } // namespace ulf::susiv2
