@@ -72,6 +72,11 @@ frame2packet(std::span<uint8_t const> frame) {
       if (size(result) >= exit_size) result = result.subspan(0uz, exit_size);
       else return std::nullopt;
       break;
+    case zusi::Command::ZppLcDcQuery:
+      if (size(result) >= zpplcdcquery_size)
+        result = result.subspan(0uz, zpplcdcquery_size);
+      else return std::nullopt;
+      break;
     default: break;
   }
 

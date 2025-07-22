@@ -25,6 +25,7 @@ inline constexpr size_t cvwrite_size(uint8_t cnt) { return 7uz + cnt + 1uz; }
 
 inline constexpr size_t zpperase_size{4uz};
 inline constexpr size_t zppwrite_size(uint8_t cnt) { return 7uz + cnt + 1uz; }
+inline constexpr size_t zpplcdcquery_size{6uz};
 
 inline constexpr size_t features_size{2uz};
 inline constexpr size_t exit_size{5uz};
@@ -164,6 +165,9 @@ get_checksum(std::span<uint8_t const> frame) {
       case zusi::Command::Exit:
         if (size(frame) == zusi::exit_flags_pos + 1uz + 1uz)
           return frame[zusi::exit_flags_pos + 1uz];
+        break;
+      case zusi::Command::ZppLcDcQuery:
+        if (size(frame) == zpplcdcquery_size) return frame[zpplcdcquery_size];
         break;
       default: return std::unexpected(std::errc::protocol_error);
     }
