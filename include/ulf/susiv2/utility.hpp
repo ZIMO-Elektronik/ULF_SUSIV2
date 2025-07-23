@@ -40,8 +40,8 @@ constexpr std::expected<std::optional<zusi::Command>, std::errc>
 get_command(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::cmd_pos) {
     if (zusi::is_valid_command(frame[zusi::cmd_pos]))
-      return std::bit_cast<zusi::Command>(frame[zusi::cmd_pos]);
-    else return std::unexpected(std::errc::protocol_error);
+      return static_cast<zusi::Command>(frame[zusi::cmd_pos]);
+    else return std::unexpected{std::errc::protocol_error};
   }
   return std::nullopt;
 }
@@ -55,11 +55,11 @@ get_command(std::span<uint8_t const> frame) {
 constexpr std::expected<std::optional<uint8_t>, std::errc>
 get_count(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::data_cnt_pos)
-    switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
+    switch (static_cast<zusi::Command>(frame[zusi::cmd_pos])) {
       case zusi::Command::CvRead: [[fallthrough]];
       case zusi::Command::CvWrite: [[fallthrough]];
       case zusi::Command::ZppWrite: return frame[zusi::data_cnt_pos];
-      default: return std::unexpected(std::errc::protocol_error);
+      default: return std::unexpected{std::errc::protocol_error};
     }
   return std::nullopt;
 }
@@ -74,12 +74,12 @@ get_count(std::span<uint8_t const> frame) {
 constexpr std::expected<std::optional<uint32_t>, std::errc>
 get_address(std::span<uint8_t const> frame) {
   if (size(frame) > (zusi::addr_pos + 3uz))
-    switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
+    switch (static_cast<zusi::Command>(frame[zusi::cmd_pos])) {
       case zusi::Command::CvRead: [[fallthrough]];
       case zusi::Command::CvWrite: [[fallthrough]];
       case zusi::Command::ZppWrite:
         return zusi::data2uint32(&frame[zusi::addr_pos]);
-      default: return std::unexpected(std::errc::protocol_error);
+      default: return std::unexpected{std::errc::protocol_error};
     }
   return std::nullopt;
 }
@@ -97,7 +97,7 @@ constexpr std::expected<std::optional<ztl::inplace_vector<uint8_t, 256uz>>,
                         std::errc>
 get_data(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::data_pos)
-    switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
+    switch (static_cast<zusi::Command>(frame[zusi::cmd_pos])) {
       case zusi::Command::CvWrite: [[fallthrough]];
       case zusi::Command::ZppWrite: {
         size_t const count{frame[zusi::data_cnt_pos]};
@@ -110,7 +110,7 @@ get_data(std::span<uint8_t const> frame) {
         }
         break;
       }
-      default: return std::unexpected(std::errc::protocol_error); break;
+      default: return std::unexpected{std::errc::protocol_error}; break;
     }
   return std::nullopt;
 }
@@ -124,9 +124,9 @@ get_data(std::span<uint8_t const> frame) {
 constexpr std::expected<std::optional<uint8_t>, std::errc>
 get_exit_flags(std::span<uint8_t const> frame) {
   if (size(frame) > zusi::exit_flags_pos)
-    switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
+    switch (static_cast<zusi::Command>(frame[zusi::cmd_pos])) {
       case zusi::Command::Exit: return frame[zusi::exit_flags_pos];
-      default: return std::unexpected(std::errc::protocol_error);
+      default: return std::unexpected{std::errc::protocol_error};
     }
   return std::nullopt;
 }
@@ -142,7 +142,7 @@ get_checksum(std::span<uint8_t const> frame) {
   // TODO: Replace magic numbers with macros/constexpr/similar
 
   if (size(frame) > zusi::cmd_pos) {
-    switch (std::bit_cast<zusi::Command>(frame[zusi::cmd_pos])) {
+    switch (static_cast<zusi::Command>(frame[zusi::cmd_pos])) {
       case zusi::Command::CvRead:
         if (size(frame) == zusi::addr_pos + 3uz + 1uz + 1uz)
           return frame[zusi::addr_pos + 3uz + 1uz];
@@ -167,9 +167,10 @@ get_checksum(std::span<uint8_t const> frame) {
           return frame[zusi::exit_flags_pos + 1uz];
         break;
       case zusi::Command::ZppLcDcQuery:
-        if (size(frame) == zpplcdcquery_size) return frame[zpplcdcquery_size];
+        if (size(frame) == zpplcdcquery_size)
+          return frame[zpplcdcquery_size - 1uz];
         break;
-      default: return std::unexpected(std::errc::protocol_error);
+      default: return std::unexpected{std::errc::protocol_error};
     }
   }
   return std::nullopt;

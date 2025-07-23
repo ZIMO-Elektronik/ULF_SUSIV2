@@ -3,9 +3,9 @@
 #include <zusi/crc8.hpp>
 #include "ulf/susiv2.hpp"
 
-TEST(validation, CvRead_validation) {
-  using namespace ulf::susiv2;
+using namespace ulf::susiv2;
 
+TEST(validation, CvRead_validation) {
   // Valid CvRead Frame
   std::vector<uint8_t> frame{0x01u, 0x01u, 0x00u, 0x00u, 0x00u, 0xFFu};
   frame.push_back(zusi::crc8(frame));
@@ -26,13 +26,15 @@ TEST(validation, CvRead_validation) {
 }
 
 TEST(validation, CvWrite_validation) {
-  using namespace ulf::susiv2;
-
   // Valid CvWrite Frame
   ztl::inplace_vector<uint8_t, 4uz> values{0x01u, 0x02u, 0x03u, 0x04u};
-  std::vector<uint8_t> frame{
-    0x02u, size(values) - 1uz, 0x00u, 0x00u, 0x00u, 0xFFu};
-  std::copy(begin(values), end(values), std::back_inserter(frame));
+  std::vector<uint8_t> frame{0x02u,
+                             static_cast<uint8_t>(size(values) - 1uz),
+                             0x00u,
+                             0x00u,
+                             0x00u,
+                             0xFFu};
+  std::ranges::copy(values, std::back_inserter(frame));
   frame.push_back(zusi::crc8(frame));
   ASSERT_TRUE(validate(frame));
   ASSERT_TRUE(*validate(frame));
@@ -51,8 +53,6 @@ TEST(validation, CvWrite_validation) {
 }
 
 TEST(validation, DeleteFlash_validation) {
-  using namespace ulf::susiv2;
-
   // Valid FlashDelete Frame
   std::vector<uint8_t> frame{0x04u, 0x55u, 0xAAu};
   frame.push_back(zusi::crc8(frame));
@@ -73,13 +73,15 @@ TEST(validation, DeleteFlash_validation) {
 }
 
 TEST(validation, WriteFlash_validation) {
-  using namespace ulf::susiv2;
-
   // Valid FlashWrite Frame
   ztl::inplace_vector<uint8_t, 4uz> values{0x01u, 0x02u, 0x03u, 0x04u};
-  std::vector<uint8_t> frame{
-    0x05u, size(values) - 1uz, 0x00u, 0x00u, 0x00u, 0xFFu};
-  std::copy(begin(values), end(values), std::back_inserter(frame));
+  std::vector<uint8_t> frame{0x05u,
+                             static_cast<uint8_t>(size(values) - 1uz),
+                             0x00u,
+                             0x00u,
+                             0x00u,
+                             0xFFu};
+  std::ranges::copy(values, std::back_inserter(frame));
   frame.push_back(zusi::crc8(frame));
   ASSERT_TRUE(validate(frame));
   ASSERT_TRUE(*validate(frame));
@@ -98,8 +100,6 @@ TEST(validation, WriteFlash_validation) {
 }
 
 TEST(validation, FeatureRequest_validation) {
-  using namespace ulf::susiv2;
-
   // Valid FeatureRequest Frame
   std::vector<uint8_t> frame{0x06u};
   frame.push_back(zusi::crc8(frame));
@@ -120,8 +120,6 @@ TEST(validation, FeatureRequest_validation) {
 }
 
 TEST(validation, Exit_validation) {
-  using namespace ulf::susiv2;
-
   // Valid Exit Frame
   std::vector<uint8_t> frame{0x07u, 0x55u, 0xAAu, 0x00u};
   frame.push_back(zusi::crc8(frame));

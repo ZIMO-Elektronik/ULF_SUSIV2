@@ -42,7 +42,7 @@ frame2packet(std::span<uint8_t const> frame) {
   if (!cmd) return std::unexpected{cmd.error()};
   if (!*cmd) return std::nullopt;
 
-  switch (std::bit_cast<zusi::Command>(**cmd)) {
+  switch (**cmd) {
     case zusi::Command::CvRead:
       if (size(result) >= cvread_size)
         result = result.subspan(0uz, cvread_size);
@@ -83,7 +83,7 @@ frame2packet(std::span<uint8_t const> frame) {
   // Could be command?
   auto const valid{validate(result)};
 
-  if (!valid) return std::unexpected(valid.error());
+  if (!valid) return std::unexpected{valid.error()};
   if (!*valid) return std::nullopt;
   return result;
 }
