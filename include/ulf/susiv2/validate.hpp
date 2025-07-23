@@ -28,7 +28,7 @@ validate(std::span<uint8_t const> const& frame) {
 
   if (cmd && crc) {
     if (*cmd && *crc) {
-      if (!zusi::crc8(frame)) return true;
+      if (zusi::crc8({cbegin(frame), cend(frame) - 1}) == **crc) return true;
       else return std::unexpected{std::errc::protocol_error};
     }
     // Incomplete
