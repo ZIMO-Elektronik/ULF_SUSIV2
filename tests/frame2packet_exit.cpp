@@ -1,18 +1,17 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include "ulf/susiv2.hpp"
 
-#include <algorithm>
+using namespace ulf::susiv2;
 
 constexpr std::array<uint8_t, 5uz> susiv2_pre{
   0x00u, 0x00u, 0x00u, 0x02u, 0x01u};
 constexpr std::array<uint8_t, 5uz> exit_zusi{0x07u, 0x55u, 0xAAu, 0x02u, 0x7Du};
 
 TEST(format, valid_Exit) {
-  using namespace ulf::susiv2;
-
   // Valid Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
+  std::ranges::copy(exit_zusi, std::back_inserter(sv2_frame));
   std::span<uint8_t const> frame_s{sv2_frame};
 
   auto ret{frame2packet(frame_s)};
@@ -23,11 +22,9 @@ TEST(format, valid_Exit) {
 }
 
 TEST(format, short_Exit) {
-  using namespace ulf::susiv2;
-
   // Short Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
+  std::ranges::copy(exit_zusi, std::back_inserter(sv2_frame));
 
   sv2_frame.pop_back();
   std::span<uint8_t const> frame_s{sv2_frame};
@@ -38,11 +35,9 @@ TEST(format, short_Exit) {
 }
 
 TEST(format, invalid_Exit) {
-  using namespace ulf::susiv2;
-
   // Invalid Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
+  std::ranges::copy(exit_zusi, std::back_inserter(sv2_frame));
 
   sv2_frame.pop_back();
   sv2_frame.push_back(0xFFu); // Faulty checksum
@@ -53,11 +48,9 @@ TEST(format, invalid_Exit) {
 }
 
 TEST(format, too_long_Exit) {
-  using namespace ulf::susiv2;
-
   // Long Exit SUSIV2 frame
   std::vector<uint8_t> sv2_frame{begin(susiv2_pre), end(susiv2_pre)};
-  std::copy(begin(exit_zusi), end(exit_zusi), std::back_inserter(sv2_frame));
+  std::ranges::copy(exit_zusi, std::back_inserter(sv2_frame));
 
   sv2_frame.push_back(0xFFu); // Too much data
   sv2_frame.push_back(0xFAu); // Even more data

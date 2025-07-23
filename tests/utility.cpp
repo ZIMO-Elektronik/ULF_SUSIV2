@@ -3,9 +3,9 @@
 #include <vector>
 #include <zusi/command.hpp>
 
-TEST(utility, command_extract) {
-  using namespace ulf::susiv2;
+using namespace ulf::susiv2;
 
+TEST(utility, command_extract) {
   // Valid cmd byte (CvWrite)
   uint8_t cmd{std::to_underlying(zusi::Command::CvRead)};
   std::vector<uint8_t> frame{cmd, 0xFFu};
@@ -25,8 +25,6 @@ TEST(utility, command_extract) {
 }
 
 TEST(utility, count_extract) {
-  using namespace ulf::susiv2;
-
   // Valid count in  CvRead CMD
   std::vector<uint8_t> frame{0x01u, 0xFFu};
   ASSERT_TRUE(get_count(frame)) << "Valid Count caused an error";
@@ -49,8 +47,6 @@ TEST(utility, count_extract) {
 }
 
 TEST(utility, address_extract) {
-  using namespace ulf::susiv2;
-
   // Valid address in CvRead CMD
   std::vector<uint8_t> frame{0x01u, 0xFFu, 0x00u, 0x00u, 0x00u, 0xFFu};
   ASSERT_TRUE(get_address(frame))
@@ -68,13 +64,11 @@ TEST(utility, address_extract) {
 }
 
 TEST(utility, data_extract) {
-  using namespace ulf::susiv2;
-
   // Valid values in FlashWrite CMD
   ztl::inplace_vector<uint8_t, 4uz> vals{0x01u, 0x02u, 0x03u, 0x04u};
   std::vector<uint8_t> frame{
-    0x05u, size(vals) - 1uz, 0xFFu, 0xFFu, 0xFFu, 0xFFu};
-  std::copy(begin(vals), end(vals), std::back_inserter(frame));
+    0x05u, static_cast<uint8_t>(size(vals) - 1uz), 0xFFu, 0xFFu, 0xFFu, 0xFFu};
+  std::ranges::copy(vals, std::back_inserter(frame));
   auto tmp{get_data(frame)};
   ASSERT_TRUE(tmp) << "Valid frame part marked as error";
   ASSERT_TRUE(*tmp) << "Valid frame returned insufficient data";
@@ -91,7 +85,7 @@ TEST(utility, data_extract) {
 
   // Less values than count would tell
   frame = {0x05u, 0x04u, 0xFFu, 0xFFu, 0xFFu, 0xFFu};
-  std::copy(begin(vals), end(vals), std::back_inserter(frame));
+  std::ranges::copy(vals, std::back_inserter(frame));
   ASSERT_TRUE(get_data(frame))
     << "Insufficient data should not return an error";
   ASSERT_FALSE(*get_data(frame))
@@ -99,8 +93,6 @@ TEST(utility, data_extract) {
 }
 
 TEST(utility, checksum_extract) {
-  using namespace ulf::susiv2;
-
   // Valid CvWrite CMD Frame
   std::vector<uint8_t> frame{0x01u, 0x01u, 0xFFu, 0xFFu, 0xFFu, 0xFFu};
   frame.push_back(zusi::crc8(frame));

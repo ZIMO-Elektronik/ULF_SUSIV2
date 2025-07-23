@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0
+- Add `ZPP-LC-DC-Query` command ([#6](https://github.com/ZIMO-Elektronik/ULF_SUSIV2/issues/6))
+
 ## 0.2.0
 - Change return type of `frame2packet` to `std::span`
 
