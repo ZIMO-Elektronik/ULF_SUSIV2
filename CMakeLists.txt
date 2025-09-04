@@ -42,7 +42,7 @@ if(NOT TARGET ZTL::ZTL)
 endif()
 
 if(NOT TARGET ZUSI::ZUSI)
-  cpmaddpackage("gh:ZIMO-Elektronik/ZUSI@0.9.2")
+  cpmaddpackage("gh:ZIMO-Elektronik/ZUSI@0.9.3")
 endif()
 
 target_common_warnings(ULF_SUSIV2 INTERFACE)

@@ -3,8 +3,9 @@
 
 using namespace ulf::susiv2;
 
-TEST(feedback2response, empty_feedback) {
-  EXPECT_EQ((feedback2response(zusi::Feedback{})), Response{nak});
+TEST(feedback2response, nak_feedback) {
+  EXPECT_EQ((feedback2response(std::unexpected{std::errc::protocol_error})),
+            Response{nak});
 }
 
 TEST(feedback2response, ack_feedback) {
