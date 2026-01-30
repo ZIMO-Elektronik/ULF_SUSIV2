@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.2
+- Update to ZUSI 0.9.4
+
 ## 0.3.1
 - Adaptations to ZUSI 0.9.3
 
