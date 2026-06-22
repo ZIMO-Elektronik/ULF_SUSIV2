@@ -22,11 +22,11 @@ ULF_SUSIV2 is one of serval [ULF_COM](https://github.com/ZIMO-Elektronik/ULF_COM
 
 ## Protocol
 The protocol consists of only a single frame and is essentially a wrapper around [ZUSI](https://github.com/ZIMO-Elektronik/ZUSI) packets. The following header is prepended to the actual data.
-| Length | Description                                                                              |
-| ------ | ---------------------------------------------------------------------------------------- |
-| 4 byte | Length of the expected answer in byte (not including the ack/nak byte)                   |
-| 1 byte | 1 - ZUSI command contains a busy phase<br>0 - ZUSI command doesn't contains a busy phase |
-| N byte | ZUSI packet                                                                              |
+| Length              | Description                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| 4 byte              | Length of the expected answer in byte (not including the ack/nak byte)                   |
+| 1 byte (deprecated) | 1 - ZUSI command contains a busy phase<br>0 - ZUSI command doesn't contains a busy phase |
+| N byte              | ZUSI packet                                                                              |
 
 Each SUSIV2 frame is followed by a response. This consists of an [ack](./include/ulf/susiv2/ack.hpp) or [nak](./include/ulf/susiv2/nak.hpp) byte and any data sent by the decoder including the CRC8 checksum.
 
