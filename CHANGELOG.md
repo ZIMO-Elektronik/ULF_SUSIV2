@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+- Update to ZUSI 0.9.5
+- Update to ZTL 0.25.0
+
 ## 0.3.2
 - Update to ZUSI 0.9.4
 
