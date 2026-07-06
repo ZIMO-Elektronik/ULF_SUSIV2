@@ -31,7 +31,8 @@ target_compile_definitions(
   INTERFACE ULF_SUSIV2_MAX_FRAME_SIZE=${ULF_SUSIV2_MAX_FRAME_SIZE}
             ULF_SUSIV2_MAX_RESPONSE_SIZE=${ULF_SUSIV2_MAX_RESPONSE_SIZE})
 
-if(PROJECT_IS_TOP_LEVEL)
+# https://github.com/espressif/esp-idf/issues/17773
+if(PROJECT_IS_TOP_LEVEL AND NOT ESP_PLATFORM)
   target_include_directories(ULF_SUSIV2 INTERFACE include)
   target_common_warnings(ULF_SUSIV2 INTERFACE)
   target_common_errors(ULF_SUSIV2 INTERFACE)

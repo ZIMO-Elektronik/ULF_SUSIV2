@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.4
+- Add workaround for Espressif's misuse of CMake
+
 ## 0.3.3
 - Update to ZUSI 0.9.5
 - Update to ZTL 0.25.0
