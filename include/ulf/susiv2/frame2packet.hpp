@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/// Convert frame to ZUSI packet
+/// Convert SUSIV2 frame to ZUSI packet
 ///
 /// \file   ulf/susiv2/frame2packet.hpp
 /// \author Jonas Gahlert
