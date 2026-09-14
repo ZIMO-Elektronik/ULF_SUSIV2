@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.5
+- Add `packet2frame` function ([#9](https://github.com/ZIMO-Elektronik/ULF_SUSIV2/pull/9))
+
 ## 0.3.4
 - Add workaround for Espressif's misuse of CMake
 
