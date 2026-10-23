@@ -15,6 +15,7 @@ TEST(feedback2response, ack_feedback) {
 }
 
 TEST(feedback2response, cv_feedback) {
-  EXPECT_EQ((feedback2response(zusi::Feedback{{42}})),
-            (Response{ack, 42, zusi::crc8(42)}));
+  EXPECT_EQ(
+    (feedback2response(zusi::Feedback{ztl::inplace_vector<uint8_t, 4uz>{42}})),
+    (Response{ack, 42, zusi::crc8(42)}));
 }

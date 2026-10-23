@@ -24,7 +24,7 @@ namespace ulf::susiv2 {
 /// \param  fb  ZUSI feedback
 /// \return Response
 constexpr Response feedback2response(zusi::Feedback fb) {
-  if (!fb) return {nak};
+  if (!fb) return Response{nak};
   Response resp{ack};
   if (size(*fb)) {
     std::ranges::copy(*fb, std::back_inserter(resp));
